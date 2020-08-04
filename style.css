@@ -1,0 +1,756 @@
+/* MODAL CLASS */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.5);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  background-color: #000;
+}
+input[type="checkbox"]:checked ~ .overlay {
+  pointer-events: auto;
+  opacity: 0.9;
+  transform: scale(1);
+}
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 100;
+  width: 100%;
+  max-width: 600px;
+  transform: translate(-50%, -50%) scale(0.5);
+  transition-delay: 0.1s;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+input[type="checkbox"]:checked ~ .modal {
+  pointer-events: auto;
+  opacity: 1;
+  transform: scale();
+  transform: translate(-50%, -50%) scale(1);
+}
+.modal__content {
+  display: block;
+  background-color: #ffffff;
+  padding: 30px;
+}
+
+
+/* =========================
+   PACMAN!
+   ========================= */
+
+.path {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  background: #333;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.path::after {
+  content: "";
+  position: absolute;
+  display: block;
+  border-top: 12px dotted white;
+  color: white;
+  width: 90%;
+  top: 50%;
+  left: 5%;
+  margin-top: -6px;
+}
+
+.pacman {
+  position: absolute;
+  z-index: 99;
+  top: 50%;
+  left: -20%;
+  animation: moveForward 5s linear infinite;
+  animation-delay: 0.8s;
+}
+
+.pacman::before,
+.pacman::after {
+  content: "";
+  display: block;
+  height: 0;
+  width: 0;
+  position: absolute;
+  border: solid 30px yellow;
+  margin-top: -30px;
+  border-radius: 50%;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  animation: mouthTop 0.7s ease infinite;
+}
+
+.pacman::after {
+  border-color: yellow;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  animation: mouthBottom 0.7s ease infinite;
+}
+
+.ghost {
+  position: absolute;
+  z-index: 99;
+  top: 50%;
+  left: 20%;
+  margin-top: -35px;
+  background: red;
+  height: 70px;
+  width: 60px;
+  border-top-left-radius: 70px;
+  border-top-right-radius: 70px;
+  animation: moveForward 5s linear infinite, colourSwap 0.5s linear infinite;
+}
+
+/* using these for eyes */
+.ghost::before,
+.ghost::after {
+  content: "";
+  position: absolute;
+  background: white;
+  height: 25px;
+  width: 20px;
+  border-radius: 100%;
+  top: 15px;
+  left: 4px;
+}
+
+.ghost::after {
+  left: 28px;
+}
+
+.eyes::before,
+.eyes::after {
+  content: "";
+  position: absolute;
+  background: blue;
+  height: 10px;
+  width: 10px;
+  border-radius: 100%;
+  top: 25px;
+  left: 5px;
+  z-index: 99;
+  animation: peeperLeft 0.7s linear infinite;
+}
+
+.eyes::after {
+  left: 30px;
+  animation: peeperRight 0.7s linear infinite;
+}
+
+.skirt {
+  position: absolute;
+  height: 0;
+  width: 0;
+  border: solid 10px #333;
+  border-top-color: transparent;
+  bottom: -10px;
+}
+.skirt::after,
+.skirt::before {
+  content: "";
+  position: absolute;
+  height: 0;
+  width: 0;
+  border: solid 10px #333;
+  border-top-color: transparent;
+  bottom: -10px;
+  left: 10px;
+}
+.skirt::after {
+  border-color: #333;
+  border-top-color: transparent;
+  bottom: -10px;
+  left: 30px;
+}
+
+@keyframes moveForward {
+  0% {
+    left: -20%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes mouthTop {
+  50% {
+    transform: rotate(44deg);
+  }
+}
+
+@keyframes mouthBottom {
+  50% {
+    transform: rotate(-44deg);
+  }
+}
+
+@keyframes peeperLeft {
+  0%,
+  100% {
+    left: 5px;
+  }
+  50% {
+    left: 10px;
+  }
+}
+
+@keyframes peeperRight {
+  0%,
+  100% {
+    left: 30px;
+  }
+  50% {
+    left: 38px;
+  }
+}
+
+@keyframes colourSwap {
+  50% {
+    background: hotpink;
+  }
+}
+/* =========================
+   TOOLTIPS
+   ========================= */
+
+.tooltip {
+  position: relative;
+  height: 60px;
+  width: 250px;
+  background: #f2395a;
+  color: white;
+  text-align: center;
+  line-height: 60px;
+  font-size: 18px;
+  margin: 0 auto;
+}
+.tooltip::before {
+  position: absolute;
+  z-index: 2;
+  display: none;
+  width: 200px;
+  max-width: 200px;
+  padding: 10px;
+  font-size: 0.8em;
+  line-height: 1.4;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  content: attr(title);
+}
+.tooltip::after {
+  position: absolute;
+  z-index: 1;
+  display: none;
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  content: "";
+}
+.tooltip:hover::before,
+.tooltip:hover::after {
+  display: inline-block;
+}
+
+.tooltip.top::before {
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.tooltip.top::after {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-width: 0;
+  border-top-color: rgba(0, 0, 0, 0.8);
+}
+.tooltip.bottom::before {
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translatex(-50%);
+}
+.tooltip.bottom::after {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-width: 0;
+  border-bottom-color: rgba(0, 0, 0, 0.8);
+}
+.tooltip.right::before {
+  top: 50%;
+  left: calc(100% + 5px);
+  transform: translateY(-50%);
+}
+.tooltip.right::after {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border-left-width: 0;
+  border-right-color: rgba(0, 0, 0, 0.8);
+}
+.tooltip.left::before {
+  top: 50%;
+  right: calc(100% + 5px);
+  transform: translateY(-50%);
+}
+.tooltip.left::after {
+  top: 50%;
+  right: 100%;
+  transform: translateYf(-50%);
+  border-right-width: 0;
+  border-left-color: rgba(0, 0, 0, 0.8);
+}
+/* =========================
+   PROGRESS BARS #1
+   ========================= */
+.animation-bar-1 {
+  position: relative;
+  display: block;
+  padding: 5px;
+  font-size: 16px;
+  line-height: 16px;
+  border-radius: 30px;
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 00, 0.25),
+    0 1px rgba(255, 255, 255, 0.08);
+}
+.animation-bar-1 span {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  height: 20px;
+  border-radius: 10px 0 0 10px;
+  overflow: hidden;
+  background-color: #f56982;
+  background-size: 100%;
+  background-image: linear-gradient(to bottom, #f239f2, #b90c2b);
+  animation: progress-anim-1 10s infinite linear;
+}
+.animation-bar-1 span::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: "";
+  background-size: 100%;
+  background-image: linear-gradient(
+    45deg,
+    #ffffff 25%,
+    rgba(0, 0, 0, 0) 25%,
+    rgba(0, 0, 0, 0) 50%,
+    #ffffff 50%,
+    #ffffff 75%,
+    rgba(0, 0, 0, 0) 75%,
+    rgba(0, 0, 0, 0)
+  );
+  background-size: 30px 30px;
+  opacity: 0.3;
+  animation: progress-anim-1-after 0.5s infinite linear;
+}
+
+@keyframes progress-anim-1 {
+  0% {
+    width: 20%;
+  }
+  50% {
+    width: 80%;
+  }
+  100% {
+    width: 20%;
+  }
+}
+@keyframes progress-anim-1-after {
+  0% {
+    background-position: 0 100%;
+  }
+  100% {
+    background-position: 30px 100%;
+  }
+}
+/* =========================
+      PROGRESS BARS #2
+      ========================= */
+.animation-bar-2 {
+  position: relative;
+  display: block;
+  font-size: 16px;
+  line-height: 16px;
+  background: rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25),
+    0 1px rgba(255, 255, 255, 0.08);
+}
+.animation-bar-2 span {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  height: 20px;
+  background-color: #00e6e7;
+  background-size: 100%;
+  background-image: linear-gradient(to bottom, #00b3b4, #008081);
+  animation: progress-anim-2 10s infinite ease;
+}
+
+.animation-bar-2 span::before {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-right-width: 0;
+  border-bottom-width: 0;
+  border-top-color: rgba(0, 0, 0, 1);
+  content: "";
+}
+.animation-bar-2 span::after {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 5px);
+  z-index: 1;
+  display: inline-block;
+  content: attr(data-label);
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 0.8em;
+  background-color: rgba(0, 0, 0, 1);
+  color: #ffffff;
+}
+@keyframes progress-anim-2 {
+  0% {
+    width: 20%;
+  }
+  50% {
+    width: 100%;
+  }
+  100% {
+    width: 20%;
+  }
+}
+/* ========================================
+
+    CODE YOUR STYLES BELOW!   HOVER BOX  SLIDE EFFECT
+
+   ====================================== */
+.container {
+  margin: 100px;
+  display: flex;
+  justify-content: center;
+}
+.triangle {
+  position: relative;
+  height: 320px;
+
+  width: 200px;
+}
+
+.triangle div {
+  position: absolute;
+  top: 0;
+  line-height: 100px;
+  font-size: 0.8em;
+  text-align: center;
+  background-color: red;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  border-radius: 20px;
+  color: red;
+  transition: all ease 0.6s;
+}
+.triangle .top {
+  z-index: 2;
+}
+.triangle .mid {
+  z-index: 1;
+}
+.triangle:hover div {
+  color: white;
+}
+.triangle:hover .mid {
+  top: 110px;
+  background: green;
+}
+.triangle:hover .bottom {
+  top: 220px;
+  background: blue;
+}
+
+/* =========================
+   SPINNERS #1
+   ========================= */
+.spinner-1 {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  width: 64px;
+  height: 64px;
+  border-radius: 64px;
+}
+.spinner-1::before {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 64px;
+  content: "";
+  clip: rect(0, 64px, 32px, 0);
+  box-shadow: inset -5px 0 0 5px currentColor;
+  color: #323b40;
+  animation: rotator 1s infinite linear;
+}
+.spinner-2 {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 32px;
+  height: 16px;
+  width: 16px;
+  border-radius: 16px;
+  background-color: #323b40;
+}
+.spinner-2::before,
+.spinner-2::after {
+  position: absolute;
+  content: "";
+  display: inline-block;
+  vertical-align: middle;
+  height: 16px;
+  width: 16px;
+  border-radius: 16px;
+  background-color: #323b40;
+}
+.spinner-2::before {
+  transform: translateX(-120%);
+  transform-origin: 32px 50%;
+  animation: orbit-1 1s linear infinite;
+}
+.spinner-2::after {
+  transform: translateX(120%);
+  transform-origin: -16px 50%;
+  animation: orbit-2 1s linear infinite;
+}
+@keyframes rotator {
+  0% {
+    transform: rotate(-180deg);
+    box-shadow: inset -5px 0 0 5px currentColor;
+  }
+  50% {
+    transform: rotate(0deg);
+    box-shadow: inset -1px 0 0 1px currentColor;
+  }
+  100% {
+    transform: rotate(180deg);
+    box-shadow: inset -5px 0 0 5px currentColor;
+  }
+}
+
+@keyframes orbit-1 {
+  0% {
+    transform: translateX(-120%) rotate(180deg);
+  }
+
+  30% {
+    transform: translateX(-120%) rotate(0deg);
+  }
+
+  70% {
+    transform: translateX(-120%) rotate(0deg);
+  }
+
+  100% {
+    transform: translateX(-120%) rotate(-180deg);
+  }
+}
+@keyframes orbit-2 {
+  0% {
+    transform: translateX(120%) rotate(180deg);
+  }
+
+  30% {
+    transform: translateX(120%) rotate(0deg);
+  }
+
+  70% {
+    transform: translateX(120%) rotate(0deg);
+  }
+
+  100% {
+    transform: translateX(120%) rotate(-180deg);
+  }
+}
+
+/* =========================
+   CSS ACCORDION
+   ========================= */
+
+.accordion {
+  position: relative;
+  display: block;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+}
+
+.accordion .accordion__item {
+  display: block;
+}
+.accordion .accordion__content {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  height: 0;
+  transition: height 0.5s ease, padding 0.3s linear;
+}
+.accordion .accordion__content p {
+  padding: 20px;
+  margin: 0;
+}
+.accordion .accordion__content:target {
+  height: 150px;
+}
+.accordion__trigger {
+  text-decoration: none;
+}
+.accordion .accordion__title {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 10px;
+  font-size: 1em;
+  background-color: #00b3b4;
+  color: #ffffff;
+  border: 1px solid #379aa4;
+  box-shadow: 0 1 px 0 rgba(255, 255, 255, 0.5) inset,
+    0 -1px 0 rgba(255, 255, 255, 0.1) inset, 0 4px 0 #338a94,
+    0 4px 2px rgba(0, 0, 0, 0.5);
+}
+.accordion .accordion__title:hover {
+  background-color: #0bbfc0;
+}
+.accordion .accordion__title::after {
+  content: "";
+  position: absolute;
+  top: calc(50%-5px);
+  right: 20px;
+  width: 7px;
+  height: 7px;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  transform: rotate(-45deg);
+}
+
+/* ========================================
+
+    CODE YOUR STYLES BELOW!
+
+   ====================================== */
+
+.slide {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+.slide img {
+  display: inline-block;
+  vertical-align: middle;
+}
+.slide-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  background-color: rgba(255, 35, 69, 0.9);
+  color: #ffffff;
+  transition: transform 0.3s ease;
+  -webkit-transition: transform 0.3s ease;
+}
+.slide:hover .slide-content {
+  transform: translate(0, 0);
+  -webkit-transform: translate(0, 0);
+}
+
+.slide-top .slide-content {
+  transform: translate(0, -100%);
+  -webkit-transform: translate(0, -100%);
+}
+.slide-right .slide-content {
+  transform: translate(100%, 0);
+  -webkit-transform: translate(100%, 0);
+}
+.slide-bottom .slide-content {
+  transform: translate(0, 100%);
+  -webkit-transform: translate(0, 100%);
+}
+.slide-left .slide-content {
+  transform: translate(-100%, 0);
+  -webkit-transform: translate(-100%, 0);
+}
+
+/* =========================
+   DROPDOWN MENU
+   ========================= */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 10;
+}
+.dropdown__hover {
+  display: inline-block;
+  padding: 10px;
+  background-color: #323b40;
+  color: #ffffff;
+  border: 0 solid #323b40;
+  cursor: pointer;
+}
+.dropdown__hover:hover {
+  background-color: #222222;
+}
+.dropdown__menu {
+  position: absolute;
+  display: none;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background-color: #ffffff;
+  color: #323b40;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown:hover .dropdown__menu {
+  display: block;
+}
+.dropdown__menu a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  border-width: 0;
+  border-top: 1px solid #e0e0e0;
+}
+.dropdown__menu a:hover {
+  background-color: #f0f0f0;
+  color: #323b40;
+}
